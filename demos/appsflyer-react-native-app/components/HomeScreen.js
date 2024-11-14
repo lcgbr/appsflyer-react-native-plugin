@@ -98,6 +98,13 @@ const HomeScreen = ({navigation}) => {
     let eventValues = {
       cart_size: productList.length,
     };
+    appsFlyer.logEvent('view_cart', eventValues,
+        (result) => {
+          console.log("Evento registrado com sucesso", result);
+        },
+        (error) => {
+          console.error("Erro ao registrar evento", error);
+        });
     AFLogEvent(AF_viewCart, eventValues);
     navigation.navigate('Cart', {
       productList: productList,
