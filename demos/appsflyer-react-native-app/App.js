@@ -50,6 +50,41 @@ const App = () => {
       (error) => {
         console.error("Erro ao inicializar SDK", error);
       });
+       // Configuração inicial do AppsFlyer
+    const options = {
+      devKey: 'SUA_DEV_KEY', // Chave do desenvolvedor da AppsFlyer
+      appId: 'SEU_APP_ID',    // ID do aplicativo (para iOS)
+      isDebug: true,          // True para modo debug, false para produção
+    };
+
+    appsFlyer.initSdk(options, (result) => {
+      console.log("SDK inicializado com sucesso", result);
+    }, (error) => {
+      console.error("Erro ao inicializar SDK", error);
+    });
+
+    // Listener para eventos de instalação/conversão
+    const AFGCDListener = appsFlyer.onInstallConversionData(res => {
+      const isFirstLaunch = res?.data?.is_first_launch;
+
+      if (isFirstLaunch && JSON.parse(isFirstLaunch) === true) {
+        console.log('Primeiro lançamento do aplicativo');
+        // Realizar ações específicas para o primeiro lançamento, se necessário
+      } else {
+        console.log('Não é o primeiro lançamento!');
+      }
+    });
+
+    // Listener para Deep Links
+    const AFUDLListener = appsFlyer.onDeepLink(res => {
+      if (res?.deepLinkStatus !== 'NOT_FOUND') {
+        console.log('Deep link encontrado:', res);
+        // Ações personalizadas de navegação ou notificação de acordo com o deep link
+      } else {
+        console.log('Deep link não encontrado.');
+      }
+    });
+
    return (<NavigationContainer>
       <Stack.Navigator screenOptions={{
             headerStyle: {
