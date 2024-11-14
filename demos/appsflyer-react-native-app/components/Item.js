@@ -22,7 +22,22 @@ const Item = ({route, navigation}) => {
    }, []);
 
    const handleClick = product => {
-      addToCart(updatedProduct ? updatedProduct : product);
+      addToCart(updatedProduct ? updatedProduct : product);      
+      const eventValues = {
+        af_content_id: '12345',         // ID do produto ou conteúdo
+        af_content_type: 'product',     // Tipo de conteúdo
+        af_currency: 'USD',             // Moeda
+        af_revenue: '29.99',            // Valor da receita
+        af_quantity: 1,                 // Quantidade
+      };
+
+      appsFlyer.logEvent('af_add_to_cart', eventValues,
+        (result) => {
+          console.log("Evento registrado com sucesso", result);
+        },
+        (error) => {
+          console.error("Erro ao registrar evento", error);
+        });
       navigation.goBack();
    }
 
