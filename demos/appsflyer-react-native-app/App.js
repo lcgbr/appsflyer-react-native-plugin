@@ -25,6 +25,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 import HomeScreen from './components/HomeScreen.js';
 import Cart from './components/Cart.js';
 import Item from './components/Item.js';
+import appsFlyer from 'react-native-appsflyer';
 
 const Stack = createStackNavigator();
 try {
@@ -35,7 +36,20 @@ try {
   LogBox.ignoreLogs(['Non-serializable values were found in the navigation state']);
 
 const App = () => {
+    useEffect(() => {
+    const options = {
+      devKey: 'SUA_DEV_KEY',
+      appId: 'SEU_APP_ID',
+      isDebug: true, // Defina true para modo debug, false para produção
+    };
 
+    appsFlyer.initSdk(options, 
+      (result) => {
+        console.log("SDK inicializado com sucesso", result);
+      }, 
+      (error) => {
+        console.error("Erro ao inicializar SDK", error);
+      });
    return (<NavigationContainer>
       <Stack.Navigator screenOptions={{
             headerStyle: {
